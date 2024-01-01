@@ -15,3 +15,5 @@ The project involves training a linear regression model to solve the fitting of 
 The project was carried out using Python and its data science libraries such as Pandas, NumPy, and Matplotlib for data visualization.
 The fitting was implemented by applying methods, particularly using gradient descent to minimize the cost function.
 Two versions were developed, the first in Jupyter Notebook and the second using entirely equivalent Python files.
+
+([url_dell_immagine](https://github.com/manuelecapece/polynomialRegressionWaterDug/blob/main/img/polyFit.svg)https://github.com/manuelecapece/polynomialRegressionWaterDug/blob/main/img/polyFit.svg)
