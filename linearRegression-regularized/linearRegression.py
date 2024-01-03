@@ -44,7 +44,7 @@ x0 = np.ones((m_train,1))
 X = np.hstack((x0,Xorig))
 
 #Learning parameters
-alpha = 0.001
+alpha = 0.0001
 iterations = 3000
 l = 0 #regularizzation parameter lambda
 initial_theta = np.zeros((n+1,1))
@@ -59,6 +59,22 @@ plt.plot(J_history, color='black')
 plt.xlabel('#iterations')
 plt.ylabel('Cost J')
 plt.show()
+
+#Automatic selection of alpha
+different_alpha = 10
+alpha_possible = np.zeros((different_alpha,1))
+alpha_possible[0] = 0.0001
+result = gd.plotAlphaConvergence(iterations, different_alpha, alpha_possible, X, y, l)
+convergenceTest = result[0]
+alpha_possible = result[1]
+alpha_convergence = convergenceTest*alpha_possible
+alpha_convergence = alpha_convergence[alpha_convergence != 0]
+alpha_valid = np.copy(alpha_convergence).reshape(-1,1)
+print('Alpha opt: \n', alpha_valid)
+alpha = alpha_valid[-1]
+print('Best alpha: ', alpha)
+result = gd.train(X, y, alpha, l, initial_theta, iterations)
+theta = result[0]
 
 #Plot fit over the data
 h = X @ theta
@@ -96,10 +112,6 @@ input()
     
 #POLYNOMIAL REGRESSION
 
-#Learning parameters
-alpha = 0.001
-iterations = 3000   
-l = 0 #regularizzation parameter lambda
 maxPol = 10
 initial_theta = np.zeros((n+1,1))
 result = pr.polynomialPlot(Xorig, y, XvalOrig, yval, maxPol , alpha, l, initial_theta, iterations,1)
@@ -143,10 +155,6 @@ X_poly_test = X_poly_test / sigma
 x0 = np.ones((X_poly_test.shape[0],1))
 X_poly_test = np.hstack((x0,X_poly_test))
 
-#Learning parameters
-alpha = 0.001
-iterations = 3000   
-l = 0 #regularizzation parameter lambda
 initial_theta = np.zeros((X_poly.shape[1], 1))
 result = gd.train(X_poly, y, alpha, l, initial_theta, iterations)
 theta = result[0]
@@ -160,8 +168,6 @@ print("Program paused. Press Enter to continue.")
 input()
 
 #LAMBDA AUTOMATIC SELECTION   
-alpha = 0.001
-iterations = 3000 
 result = vc.plot(X_poly, y, X_poly_val, yval, alpha, iterations,1)
 lambda_vec = result[0]
 error_train = result[1]
@@ -171,9 +177,7 @@ print('# \tlambda\t\tTrain Error\t\tCross Validation Error')
 for i in range(k):
     print('\t{}\t\t{}\t\t{}'.format(lambda_vec[i], error_train[i], error_val[i]))
 
-
 #best lambda seems to be the first
-l = 0.001
 
 print("Program paused. Press Enter to continue.")
 input()
@@ -181,7 +185,7 @@ input()
 #TRAIN DEFINITIVE MODEL
 
 #Learning parameters
-alpha = 0.001
+alpha = 0.001 #best alpha
 iterations = 3000   
 l = 0.001 #best lambda
 

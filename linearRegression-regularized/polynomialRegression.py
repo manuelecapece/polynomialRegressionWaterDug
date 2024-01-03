@@ -73,7 +73,7 @@ def plotFit(min_x, max_x, mu, sigma, theta, p, df_train):
     h = X_poly @ theta
 
     df_train.plot(kind='scatter', x='x', y='y', figsize=(10, 6), marker='x', color='red')
-    plt.title('Polynomial Regression Fit (d = '+str(p)+')')
+    plt.title('Polynomial Regression Fit with degree of '+ str(p+1))
     plt.xlabel('Change in water level (x)')
     plt.ylabel('Water flowing out of the dam (y)')
     plt.plot(x, h, linestyle='--', color='blue')
