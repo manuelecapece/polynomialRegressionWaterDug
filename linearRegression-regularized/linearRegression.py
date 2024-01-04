@@ -155,6 +155,23 @@ X_poly_test = X_poly_test / sigma
 x0 = np.ones((X_poly_test.shape[0],1))
 X_poly_test = np.hstack((x0,X_poly_test))
 
+#Automatic selection of alpha
+iterations = 200
+l = 0
+different_alpha = 10
+alpha_possible = np.zeros((different_alpha,1))
+alpha_possible[0] = 0.01
+result = gd.plotAlphaConvergence(iterations, different_alpha, alpha_possible, X_poly, y, l)
+convergenceTest = result[0]
+alpha_possible = result[1]
+alpha_convergence = convergenceTest*alpha_possible
+alpha_convergence = alpha_convergence[alpha_convergence != 0]
+alpha_valid = np.copy(alpha_convergence).reshape(-1,1)
+print('Alpha opt: \n', alpha_valid)
+alpha = alpha_valid[-1]
+print('Best alpha: ', alpha)
+
+#Train model
 initial_theta = np.zeros((X_poly.shape[1], 1))
 result = gd.train(X_poly, y, alpha, l, initial_theta, iterations)
 theta = result[0]
@@ -185,8 +202,8 @@ input()
 #TRAIN DEFINITIVE MODEL
 
 #Learning parameters
-alpha = 0.001 #best alpha
-iterations = 3000   
+alpha = 0.10604499 #best alpha
+iterations = 200   
 l = 0.001 #best lambda
 
 #Training
