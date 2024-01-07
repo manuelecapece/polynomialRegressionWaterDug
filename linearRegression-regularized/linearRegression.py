@@ -40,12 +40,16 @@ m_train = df_train.shape[0]
 n = df_train.shape[1]-1
 y = np.copy(df_train['y']).reshape(m_train, n) 
 Xorig = np.copy(df_train['x']).reshape(m_train, n) 
+result = fs.normalize(Xorig)
+Xorig_norm = result[0]
+mu = result[1]
+sigma = result[2]
 x0 = np.ones((m_train,1))
-X = np.hstack((x0,Xorig))
+X = np.hstack((x0,Xorig_norm))
 
 #Learning parameters
-alpha = 0.0001
-iterations = 3000
+alpha = 0.001
+iterations = 1000
 l = 0 #regularizzation parameter lambda
 initial_theta = np.zeros((n+1,1))
 result = gd.train(X, y, alpha, l, initial_theta, iterations)
@@ -61,9 +65,10 @@ plt.ylabel('Cost J')
 plt.show()
 
 #Automatic selection of alpha
+iterations = 400
 different_alpha = 10
 alpha_possible = np.zeros((different_alpha,1))
-alpha_possible[0] = 0.0001
+alpha_possible[0] = 0.001
 result = gd.plotAlphaConvergence(iterations, different_alpha, alpha_possible, X, y, l)
 convergenceTest = result[0]
 alpha_possible = result[1]
@@ -93,8 +98,11 @@ m_cv = df_cv.shape[0]
 n = df_cv.shape[1]-1
 yval = np.copy(df_cv['y']).reshape(m_cv, n) 
 XvalOrig = np.copy(df_cv['x']).reshape(m_cv, n) 
+XvalOrig_norm = np.copy(XvalOrig)
+XvalOrig_norm = XvalOrig_norm - mu
+XvalOrig_norm = XvalOrig_norm / sigma
 x0 = np.ones((m_cv,n))
-Xval = np.hstack((x0,XvalOrig))
+Xval = np.hstack((x0,XvalOrig_norm))
 
 result = lc.plot(X, y, Xval, yval, alpha, l, iterations,1)
 error_train = result[0]
@@ -121,17 +129,17 @@ error_val = result[1]
 k = len(error_train)
 print('# Polynomial Degree\tTrain Error\t\tCross Validation Error')
 for i in range(k):
-    print('\t{}\t\t{}\t\t{}'.format(i + 1, error_train[i], error_val[i]))
+    print('\t{}\t\t{}\t\t{}'.format(i , error_train[i], error_val[i]))
 
 print("Program paused. Press Enter to continue.")
 input()
     
-#best degree seems to be 5
+#best degree seems to be 3
 m_test = df_test.shape[0]
 Xtest = df_test['x'].to_numpy().reshape(m_test,n)
 X = np.copy(Xorig)
 Xval = np.copy(XvalOrig)
-d = 4 #means polynomial whit degree of 5
+d = 3
 
 #preparing data with features scaling
 
@@ -156,7 +164,7 @@ x0 = np.ones((X_poly_test.shape[0],1))
 X_poly_test = np.hstack((x0,X_poly_test))
 
 #Automatic selection of alpha
-iterations = 200
+iterations = 1000
 l = 0
 different_alpha = 10
 alpha_possible = np.zeros((different_alpha,1))
@@ -203,7 +211,7 @@ input()
 
 #Learning parameters
 alpha = 0.10604499 #best alpha
-iterations = 200   
+iterations = 1000   
 l = 0.001 #best lambda
 
 #Training

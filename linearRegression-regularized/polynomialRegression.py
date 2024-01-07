@@ -49,7 +49,7 @@ def polynomialPlot(X, y, Xval, yval, maxDegree , alpha, l, initial_theta, iterat
         error_train[d] = cf.calculate(X_poly, y, theta, l)
         error_val[d] = cf.calculate(X_poly_val, yval, theta, l)
     if plotChart == 1:
-        polyDegrees = np.arange(1 , maxDegree+1)
+        polyDegrees = np.arange(0 , maxDegree)
         plt.figure(figsize=(10, 6))
         plt.title('Learning curve')
         plt.plot(polyDegrees,error_train, label='Train', color='blue')
@@ -73,7 +73,7 @@ def plotFit(min_x, max_x, mu, sigma, theta, p, df_train):
     h = X_poly @ theta
 
     df_train.plot(kind='scatter', x='x', y='y', figsize=(10, 6), marker='x', color='red')
-    plt.title('Polynomial Regression Fit with degree of '+ str(p+1))
+    plt.title('Polynomial Regression Fit (d = '+ str(p) + ')')
     plt.xlabel('Change in water level (x)')
     plt.ylabel('Water flowing out of the dam (y)')
     plt.plot(x, h, linestyle='--', color='blue')
